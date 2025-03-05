@@ -1,0 +1,72 @@
+using System;
+using System.Collections.Generic;
+
+internal class ArrayCreator
+{
+    public static int[] CreateArray(int size, bool sorted)
+    {
+        Random random = new Random(Environment.TickCount);
+        int[] array = new int[size];
+        for (int i = 0; i < size; i++)
+        {
+            array[i] = random.Next(0, size);
+        }
+        if (sorted)
+        {
+            Array.Sort(array);
+        }
+        return array;
+    }
+}
+
+class LinearSearch
+{
+    public static int SearchWithTransposition(int[] arr, int key)
+    {
+        for (int i = 0; i < arr.Length; i++)
+        {
+            if (arr[i] == key)
+            {
+                if (i > 0)
+                {
+                    (arr[i], arr[i - 1]) = (arr[i - 1], arr[i]);
+                }
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static int SearchWithMoveToFront(int[] arr, int key)
+    {
+        for (int i = 0; i < arr.Length; i++)
+        {
+            if (arr[i] == key)
+            {
+                (arr[i], arr[0]) = (arr[0], arr[i]);
+                return i;
+            }
+        }
+        return -1;
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        int[] array = ArrayCreator.CreateArray(10, false);
+        Console.WriteLine("Масив: " + string.Join(", ", array));
+
+        int key = array[5];
+        Console.WriteLine("Търсим ключ: " + key);
+
+        int index1 = LinearSearch.SearchWithTransposition(array, key);
+        Console.WriteLine("Намерен на позиция (транспониране): " + index1);
+        Console.WriteLine("Масив след транспониране: " + string.Join(", ", array));
+
+        int index2 = LinearSearch.SearchWithMoveToFront(array, key);
+        Console.WriteLine("Намерен на позиция (преместване отпред): " + index2);
+        Console.WriteLine("Масив след преместване отпред: " + string.Join(", ", array));
+    }
+}
