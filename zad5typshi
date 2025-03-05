@@ -1,0 +1,55 @@
+using System;
+using System.Collections.Generic;
+
+class Student
+{
+    public string Name { get; set; }
+    public int Score { get; set; }
+
+    public Student(string name, int score)
+    {
+        Name = name;
+        Score = score;
+    }
+}
+
+class University
+{
+    private List<Student> students = new List<Student>();
+
+    public void AddStudent(Student student)
+    {
+        students.Add(student);
+        students.Sort((a, b) => a.Score.CompareTo(b.Score));
+    }
+
+    public string FindStudentByScore(int score)
+    {
+        int left = 0, right = students.Count - 1;
+        while (left <= right)
+        {
+            int mid = left + (right - left) / 2;
+            if (students[mid].Score == score)
+                return students[mid].Name;
+            if (students[mid].Score < score)
+                left = mid + 1;
+            else
+                right = mid - 1;
+        }
+        return "Не е намерен";
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        University university = new University();
+        university.AddStudent(new Student("Иван", 85));
+        university.AddStudent(new Student("Мария", 90));
+        university.AddStudent(new Student("Петър", 95));
+        
+        Console.WriteLine(university.FindStudentByScore(90));
+        Console.WriteLine(university.FindStudentByScore(80)); 
+    }
+}
